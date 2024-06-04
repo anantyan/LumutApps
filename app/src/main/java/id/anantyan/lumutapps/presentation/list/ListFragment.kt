@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.anantyan.lumutapps.common.UIState
 import id.anantyan.lumutapps.data.remote.network.AppNetwork
@@ -56,6 +57,7 @@ class ListFragment : Fragment() {
                     Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
                 }
                 is UIState.Success -> {
+                    Log.d("List", state.data.toString())
                     adapter.submitList(state.data)
                 }
                 is UIState.Error -> {
@@ -68,6 +70,7 @@ class ListFragment : Fragment() {
     }
 
     private fun bindInit() {
+        binding.rvList.layoutManager = LinearLayoutManager(requireContext())
         binding.rvList.adapter = adapter
         adapter.onClick { position, item ->
             findNavController().navigate(ListFragmentDirections.actionListFragmentToListDetailFragment(item.id ?: -1))
